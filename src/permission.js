@@ -8,6 +8,7 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
+// 白名单页面，不管谁都可以访问
 const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
@@ -49,6 +50,7 @@ router.beforeEach(async(to, from, next) => {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
           Message.error(error || 'Has Error')
+          // 路由不在白名单中，修改路由，将要访问的路由拼接后回到login
           next(`/login?redirect=${to.path}`)
           NProgress.done()
         }
